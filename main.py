@@ -35,7 +35,7 @@ def create_checkout_session():
         session = stripe.checkout.Session.create(
             payment_method_types=["card"],
             line_items=[{
-                "price": os.environ.get("price_1Rqv60PFZNlZOicCL3QJ9GzC"),  # t.ex. price_123abc
+                "price": "price_1Rqv60PFZNlZOicCL3QJ9GzC",  # t.ex. price_123abc
                 "quantity": 1,
             }],
             mode="payment",

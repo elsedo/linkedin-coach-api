@@ -38,7 +38,7 @@ def upload_file():
 
     # AI-analys
     try:
-        ai_feedback = analyze_with_vertex_ai(extracted_text)
+        ai_feedback = analyze_with_gpt(extracted_text)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 

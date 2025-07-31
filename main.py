@@ -63,7 +63,7 @@ from google.cloud import aiplatform_v1
 
 def analyze_with_vertex_ai(text):
     project = "plexiform-notch-465816-v5"
-    location = "europe-north1"
+    location = "us-central1"
     model = "text-bison"
 
     endpoint = f"projects/{project}/locations/{location}/publishers/google/models/{model}"

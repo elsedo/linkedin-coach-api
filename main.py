@@ -10,6 +10,13 @@ CORS(app)
 openai.api_key = os.environ.get("OPENAI_API_KEY")
 stripe.api_key = os.environ.get("STRIPE_SECRET_KEY")
 
+
+@app.before_request
+def block_mobile():
+    ua = request.user_agent.string.lower()
+    if 'mobile' in ua and request.endpoint in ["linkedin_info", "upload_page"]:
+        return render_template("mobile_blocked.html")
+
 # === ROUTE 1: Visa startsidan ===
 @app.route("/")
 def index():

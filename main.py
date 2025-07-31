@@ -1,10 +1,10 @@
 import os
 import tempfile
 import PyPDF2
+import openai
 
 from flask import Flask, request, jsonify
 from google.cloud import storage
-from google.cloud import aiplatform_v1
 
 from flask_cors import CORS
 
@@ -12,6 +12,7 @@ app = Flask(__name__)
 CORS(app)
 
 BUCKET_NAME = os.environ.get("BUCKET_NAME", "linkedin-coach-uploads")
+openai.api_key = os.environ.get("OPENAI_API_KEY")  # 🔐 Lägg som miljövariabel i Cloud Run
 
 @app.route("/", methods=["GET"])
 def index():
@@ -61,37 +62,29 @@ def extract_text_from_pdf(bucket_name, file_name):
         return text
 from google.cloud import aiplatform_v1
 
-def analyze_with_vertex_ai(text):
-    project = "plexiform-notch-465816-v5"
-    location = "us-central1"
-    model = "text-bison@001"
-
-    endpoint = f"projects/{project}/locations/{location}/publishers/google/models/{model}"
-    client = aiplatform_v1.PredictionServiceClient()
-
-    instance = {
-        "prompt": f"""
-Du är en professionell LinkedIn-coach.
-Här är en användares LinkedIn-profiltext:
+def analyze_with_gpt(text):
+    prompt = f"""
+Du är en professionell LinkedIn-coach. Här är en användares LinkedIn-profiltext:
 
 {text}
 
 Ge en analys:
 1. Vad fungerar bra?
 2. Vad bör förbättras?
-3. Förbättrad version av sammanfattningstexten.
+3. En förbättrad version av sammanfattningstexten.
 """
-    }
 
-    parameters = {
-        "temperature": 0.7,
-        "maxOutputTokens": 512
-    }
+    response = openai.chat.completions.create(
+        model="gpt-4",
+        messages=[
+            {"role": "system", "content": "Du är en hjälpsam och professionell LinkedIn-coach."},
+            {"role": "user", "content": prompt}
+        ],
+        temperature=0.7,
+        max_tokens=800
+    )
 
-    response = client.predict(
-        endpoint=endpoint,
-        instances=[instance],        # ✅ Skickas som lista
-        parameters=parameters        # ✅ Dict med valfria inställningar
+    return response.choices[0].message.content.strip()
     )
 
     return response.predictions[0]['content']

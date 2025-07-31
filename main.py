@@ -1,16 +1,13 @@
-import PyPDF2
-from google.cloud import storage, aiplatform
-from flask import Flask, request, jsonify
 import os
 import tempfile
+import PyPDF2
+
 from flask import Flask, request, jsonify
 from google.cloud import storage
-import os
-import tempfile
 from google.cloud import aiplatform_v1
-from google.cloud.aiplatform_v1.types import PredictRequest
 
 from flask_cors import CORS
+
 app = Flask(__name__)
 CORS(app)
 
@@ -62,10 +59,12 @@ def extract_text_from_pdf(bucket_name, file_name):
         for page in reader.pages:
             text += page.extract_text() or ""
         return text
-
 def analyze_with_vertex_ai(text):
-    endpoint = "projects/plexiform-notch-465816-v5/locations/europe-north1/publishers/google/models/text-bison"
+    project = "plexiform-notch-465816-v5"
+    location = "europe-north1"
+    model = "text-bison"
 
+    endpoint = "projects/plexiform-notch-465816-v5/locations/europe-north1/publishers/google/models/text-bison"
     client = aiplatform_v1.PredictionServiceClient()
 
     instance = {
@@ -82,14 +81,15 @@ Ge en analys:
 """
     }
 
-    parameters = {"temperature": 0.7, "maxOutputTokens": 512}
+    parameters = {
+        "temperature": 0.7,
+        "maxOutputTokens": 512
+    }
 
     response = client.predict(
-        request=PredictRequest(
-            endpoint=endpoint,
-            instances=[instance],
-            parameters=parameters
-        )
+        endpoint=endpoint,
+        instances=[instance],  # ✅ Viktigt: lista med dict
+        parameters=parameters
     )
 
-    return response.predictions[0]["content"]
+    return response.predictions[0]['content']

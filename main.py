@@ -85,6 +85,3 @@ Ge en analys:
     )
 
     return response.choices[0].message.content.strip()
-    )
-
-    return response.predictions[0]['content']

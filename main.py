@@ -16,17 +16,17 @@ def block_mobile():
     ua = request.user_agent.string.lower()
     if 'mobile' in ua and request.endpoint in ["linkedin_info", "upload_page"]:
         return render_template("mobile_blocked.html")
-
-# === ROUTE 1: Visa startsidan ===
 @app.route("/")
-def index():
-    return """
-    <h1>Välkommen till AI LinkedIn Coach</h1>
-    <p>Klicka nedan för att köpa en analys:</p>
-    <form action="/create-checkout-session" method="POST">
-        <button type="submit">Köp AI-analys (39 kr)</button>
-    </form>
-    """
+def index(): return render_template("index.html")
+
+@app.route("/linkedin-coach")
+def linkedin_info(): return render_template("linkedin_coach.html")
+
+@app.route("/linkedin-coach/upload")
+def upload_page(): return render_template("upload.html")
+
+@app.route("/linkedin-coach/result")
+def result_page(): return render_template("result.html", result="(din AI-text)")
 
 # === ROUTE 2: Skapa Stripe Checkout-session ===
 @app.route("/create-checkout-session", methods=["POST"])

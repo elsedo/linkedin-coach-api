@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head><meta charset="UTF-8"><title>LinkedIn AI Coach</title>
+<style>
+  body {
+    font-family: system-ui, sans-serif;
+    max-width: 600px;
+    margin: 3rem auto;
+    padding: 1rem;
+    background: #f9fafb;
+    color: #111827;
+  }
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #111827;
+  }
+  h2 {
+    font-size: 1.4rem;
+    margin-top: 2rem;
+    color: #1f2937;
+  }
+  p, li {
+    line-height: 1.6;
+    font-size: 1rem;
+  }
+  ul, ol {
+    margin-left: 1.2rem;
+  }
+  button {
+    background-color: #3b82f6;
+    color: white;
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    margin-top: 1rem;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #2563eb;
+  }
+  input[type="file"] {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+  .alert {
+    background: #fee2e2;
+    color: #b91c1c;
+    border-left: 4px solid #dc2626;
+    padding: 1rem;
+    margin-top: 1rem;
+    border-radius: 4px;
+  }
+  a {
+    color: #2563eb;
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+</style>
+
+</head>
+<body>
+  <h1>LinkedIn AI Coach</h1>
+
+  <p><strong>Vill du sticka ut på LinkedIn?</strong> Vår AI-analys ger dig konkreta förbättringar av din profil – på några sekunder.</p>
+
+  <h2>Hur fungerar det?</h2>
+  <ol>
+    <li>Du sparar din LinkedIn-profil som PDF (instruktion nedan)</li>
+    <li>Betalar för tjänsten</li>
+    <li>Laddar upp PDF:en och får en analys direkt</li>
+  </ol>
+
+  <h2>Vad får jag?</h2>
+  <ul>
+    <li>En AI-baserad genomgång av vad som är bra och vad som kan förbättras</li>
+    <li>Förslag på en förbättrad sammanfattningstext</li>
+    <li>Insikter som kan hjälpa dig att få fler möjligheter</li>
+  </ul>
+
+  <h2>Så sparar du din LinkedIn-profil som PDF</h2>
+  <p>
+    Gå till din profil på LinkedIn → Klicka på "Mer" → "Spara som PDF" → Ladda ner filen.
+  </p>
+
+  <h2>Viktigt:</h2>
+  <p style="color: red;">
+    ⚠️ Tjänsten fungerar endast från dator (inte mobil). Använd en laptop eller desktop för att köpa och ladda upp din PDF.
+  </p>
+
+  <h2>Pris: 39 kr</h2>
+  <form action="/create-checkout-session" method="POST">
+    <button type="submit">Köp AI-analysen nu</button>
+  </form>
+
+  <p><a href="/">← Tillbaka till Flabab</a></p>
+</body>
+</html>

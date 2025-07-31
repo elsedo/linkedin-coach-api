@@ -64,7 +64,7 @@ from google.cloud import aiplatform_v1
 def analyze_with_vertex_ai(text):
     project = "plexiform-notch-465816-v5"
     location = "us-central1"
-    model = "text-bison"
+    model = "text-bison@001"
 
     endpoint = f"projects/{project}/locations/{location}/publishers/google/models/{model}"
     client = aiplatform_v1.PredictionServiceClient()

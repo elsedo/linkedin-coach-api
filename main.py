@@ -33,7 +33,20 @@ def upload_file():
         blob = bucket.blob(file.filename)
         blob.upload_from_filename(temp.name)
 
-    return jsonify({"message": "File uploaded successfully"}), 200
+    # Extrahera text
+    extracted_text = extract_text_from_pdf(BUCKET_NAME, file.filename)
+
+    # AI-analys
+    try:
+        ai_feedback = analyze_with_vertex_ai(extracted_text)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+    return jsonify({
+        "message": "Filen laddades upp och analyserades!",
+        "feedback": ai_feedback
+    }), 200
+
 
 def extract_text_from_pdf(bucket_name, file_name):
     storage_client = storage.Client()

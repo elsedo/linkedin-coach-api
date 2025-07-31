@@ -19,7 +19,6 @@ def index():
     return "LinkedIn Coach API is running!"
 
 @app.route("/upload", methods=["POST"])
-print("OpenAI API KEY:", os.environ.get("OPENAI_API_KEY"))
 def upload_file():
     if "file" not in request.files:
         return "No file part", 400

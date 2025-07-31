@@ -3,7 +3,9 @@ from google.cloud import storage
 import os
 import tempfile
 
+from flask_cors import CORS
 app = Flask(__name__)
+CORS(app)
 
 BUCKET_NAME = os.environ.get("BUCKET_NAME", "linkedin-coach-uploads")
 

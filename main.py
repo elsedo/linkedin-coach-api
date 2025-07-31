@@ -35,12 +35,12 @@ def create_checkout_session():
         session = stripe.checkout.Session.create(
             payment_method_types=["card"],
             line_items=[{
-                "price": os.environ.get("STRIPE_PRICE_ID"),  # t.ex. price_123abc
+                "price": os.environ.get("price_1Rqv60PFZNlZOicCL3QJ9GzC"),  # t.ex. price_123abc
                 "quantity": 1,
             }],
             mode="payment",
-            success_url="https://YOUR_CLOUD_RUN_URL/success",
-            cancel_url="https://YOUR_CLOUD_RUN_URL/cancel",
+            success_url="https://linkedin-coach.flabab.com/success",
+            cancel_url="https://linkedin-coach.flabab.com/cancel",
         )
         return redirect(session.url, code=303)
     except Exception as e:

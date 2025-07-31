@@ -59,12 +59,14 @@ def extract_text_from_pdf(bucket_name, file_name):
         for page in reader.pages:
             text += page.extract_text() or ""
         return text
+from google.cloud import aiplatform_v1
+
 def analyze_with_vertex_ai(text):
     project = "plexiform-notch-465816-v5"
     location = "europe-north1"
     model = "text-bison"
 
-    endpoint = "projects/plexiform-notch-465816-v5/locations/europe-north1/publishers/google/models/text-bison"
+    endpoint = f"projects/{project}/locations/{location}/publishers/google/models/{model}"
     client = aiplatform_v1.PredictionServiceClient()
 
     instance = {
@@ -88,8 +90,8 @@ Ge en analys:
 
     response = client.predict(
         endpoint=endpoint,
-        instances=[instance],  # ✅ Viktigt: lista med dict
-        parameters=parameters
+        instances=[instance],        # ✅ Skickas som lista
+        parameters=parameters        # ✅ Dict med valfria inställningar
     )
 
     return response.predictions[0]['content']

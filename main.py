@@ -7,6 +7,8 @@ from flask import Flask, request, jsonify
 from google.cloud import storage
 import os
 import tempfile
+from google.cloud import aiplatform_v1
+from google.cloud.aiplatform_v1.types import PredictRequest
 
 from flask_cors import CORS
 app = Flask(__name__)
@@ -62,10 +64,13 @@ def extract_text_from_pdf(bucket_name, file_name):
         return text
 
 def analyze_with_vertex_ai(text):
-    aiplatform.init(project=os.environ["GOOGLE_CLOUD_PROJECT"], location="europe-north1")
-    model = aiplatform.TextGenerationModel.from_pretrained("text-bison@001")
+    endpoint = "projects/plexiform-notch-465816-v5/locations/europe-north1/publishers/google/models/text-bison"
 
-    prompt = f"""Du är en professionell LinkedIn-coach.
+    client = aiplatform_v1.PredictionServiceClient()
+
+    instance = {
+        "prompt": f"""
+Du är en professionell LinkedIn-coach.
 Här är en användares LinkedIn-profiltext:
 
 {text}
@@ -73,7 +78,18 @@ Här är en användares LinkedIn-profiltext:
 Ge en analys:
 1. Vad fungerar bra?
 2. Vad bör förbättras?
-3. Förbättrad version av sammanfattningstexten."""
+3. Förbättrad version av sammanfattningstexten.
+"""
+    }
 
-    response = model.predict(prompt=prompt, temperature=0.7, max_output_tokens=512)
-    return response.text
+    parameters = {"temperature": 0.7, "maxOutputTokens": 512}
+
+    response = client.predict(
+        request=PredictRequest(
+            endpoint=endpoint,
+            instances=[instance],
+            parameters=parameters
+        )
+    )
+
+    return response.predictions[0]["content"]
